@@ -650,3 +650,62 @@ class GameGUI:
         while self.is_running and not self.state.is_terminal_state():
             self.step_game()
             time.sleep(0.5) # Configurable speed[cite: 1]
+
+class GameLogger:
+    def __init__(self, filename="results.txt"):
+        self.filename = filename
+        # Wipe the file clean at the start of a new run
+        with open(self.filename, 'w') as f:
+            f.write("--- Stochastic Battlefield Match Log ---\n\n")
+            
+        # Track total stats for the final summary table
+        self.agent_stats = {
+            'A': {'explored': 0, 'pruned': 0, 'moves': 0},
+            'B': {'explored': 0, 'pruned': 0, 'moves': 0},
+            'C': {'explored': 0, 'pruned': 0, 'moves': 0}
+        }
+
+    def log_move(self, move_num, agent_id, agent_label, action_desc, explored, pruned, utility):
+        """Logs a single move to both console and results.txt."""
+        # Calculate pruning efficiency for this specific move
+        efficiency = (pruned / explored * 100) if explored > 0 else 0.0
+        
+        # Update running totals
+        self.agent_stats[agent_id]['explored'] += explored
+        self.agent_stats[agent_id]['pruned'] += pruned
+        self.agent_stats[agent_id]['moves'] += 1
+
+        # Format the exact output requested in the assignment
+        log_text = (
+            f"Move {move_num} Agent {agent_id} ({agent_label}) | Action: {action_desc}\n"
+            f"Expectiminimax nodes explored     : {explored:,}\n"
+            f"Nodes pruned (Alpha-Beta)         : {pruned:,} ({efficiency:.1f}%)\n"
+            f"Chosen action value (utility)     : {utility:.2f}\n"
+            f"{'-'*50}\n"
+        )
+        
+        print(log_text, end="") # Print to console
+        with open(self.filename, 'a') as f:
+            f.write(log_text)   # Append to file
+
+    def log_game_over(self, winner_id, final_scores):
+        """Logs the final winner and generates the summary table."""
+        header = "\n=== GAME OVER ===\n"
+        header += f"Winner: Agent {winner_id}\n"
+        header += f"Final Scores: A: {final_scores.get('A', 0)} | B: {final_scores.get('B', 0)} | C: {final_scores.get('C', 0)}\n\n"
+        
+        # Build the Summary Table
+        table = "=== EXPECTIMINIMAX SUMMARY TABLE ===\n"
+        table += f"{'Agent':<10} | {'Total Explored':<15} | {'Total Pruned':<15} | {'Avg Pruning %':<15}\n"
+        table += "-" * 65 + "\n"
+        
+        for agent_id, stats in self.agent_stats.items():
+            total_exp = stats['explored']
+            total_pru = stats['pruned']
+            avg_eff = (total_pru / total_exp * 100) if total_exp > 0 else 0.0
+            table += f"Agent {agent_id:<4} | {total_exp:<15,} | {total_pru:<15,} | {avg_eff:.1f}%\n"
+
+        final_text = header + table
+        print(final_text)
+        with open(self.filename, 'a') as f:
+            f.write(final_text)
