@@ -2,7 +2,9 @@ import random
 import math
 import copy
 import itertools
-
+import dearpygui.dearpygui as dpg
+import threading
+import time
 
 class Agent:
     def __init__(self, agent_id):
@@ -498,3 +500,153 @@ class AI_Agent:
                             threat_count += 1
                             
         return threat_count
+    
+
+
+class GameGUI:
+    def __init__(self, game_state):
+        self.state = game_state
+        self.cell_size = 50
+        self.is_running = False  # For the "Run" button
+        
+        # Color Dictionary for rendering
+        self.colors = {
+            '.': (200, 200, 200, 255),  # Empty: Light Grey
+            'X': (50, 50, 50, 255),     # Obstacle: Dark Grey
+            'F': (255, 215, 0, 255),    # Fortress: Gold
+            'M': (255, 69, 0, 255),     # Minefield: Red-Orange
+            'A': (65, 105, 225, 255),   # Agent A (Expert): Royal Blue
+            'B': (50, 205, 50, 255),    # Agent B (Intermediate): Lime Green
+            'C': (147, 112, 219, 255)   # Agent C (Novice): Purple
+        }
+
+    def setup_gui(self):
+        dpg.create_context()
+        dpg.create_viewport(title='Stochastic Battlefield Game', width=1200, height=800)
+        dpg.setup_dearpygui()
+
+        with dpg.window(label="Main", width=1200, height=800, no_title_bar=True, no_resize=True):
+            with dpg.group(horizontal=True):
+                
+                # --- LEFT PANEL: THE BOARD GRID ---
+                with dpg.child_window(width=600, height=750, border=False):
+                    dpg.add_text("Battlefield Map")
+                    with dpg.drawlist(width=600, height=600, tag="board_canvas"):
+                        pass # We will draw the grid here dynamically
+
+                # --- RIGHT PANEL: LIVE STATS & CONTROLS ---
+                with dpg.child_window(width=550, height=750):
+                    
+                    # 1. Controls[cite: 1]
+                    dpg.add_text("Game Controls")
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(label="Next Move", callback=self.step_game, width=120)
+                        dpg.add_button(label="Run", callback=self.toggle_run, width=120)
+                    dpg.add_separator()
+
+                    # 2. Agent Stats Panel[cite: 1]
+                    dpg.add_text("Agent Statistics", color=(255, 215, 0, 255))
+                    for agent_id in ['A', 'B', 'C']:
+                        with dpg.group(horizontal=True):
+                            dpg.add_text(f"Agent {agent_id}: ")
+                            dpg.add_text("Score: 0 | Energy: 20 | Units: 2 | Cells: 1", tag=f"stats_{agent_id}")
+                    dpg.add_separator()
+
+                    # 3. AI Node Statistics[cite: 1]
+                    dpg.add_text("Expectiminimax Per-Move Stats", color=(0, 255, 255, 255))
+                    dpg.add_text("Last Action Nodes Explored: 0", tag="nodes_explored")
+                    dpg.add_text("Last Action Nodes Pruned: 0 (0.0%)", tag="nodes_pruned")
+                    dpg.add_separator()
+
+                    # 4. Move Log Panel[cite: 1]
+                    dpg.add_text("Move Log")
+                    with dpg.child_window(width=530, height=300, tag="move_log_window"):
+                        dpg.add_text("Game Initialized...", tag="move_log_text")
+
+        self.render_board()
+        dpg.show_viewport()
+        dpg.start_dearpygui()
+        dpg.destroy_context()
+
+    def render_board(self):
+        """Draws the grid based on the current GameState."""
+        dpg.delete_item("board_canvas", children_only=True)
+        
+        for r in range(self.state.n):
+            for c in range(self.state.m):
+                cell = self.state.grid[r][c]
+                x1, y1 = c * self.cell_size, r * self.cell_size
+                x2, y2 = x1 + self.cell_size, y1 + self.cell_size
+                
+                # Determine cell base color
+                color = self.colors.get(cell.type, self.colors['.'])
+                
+                # Draw the cell tile
+                dpg.draw_rectangle([x1, y1], [x2, y2], color=(0, 0, 0, 255), fill=color, parent="board_canvas")
+                
+                # Overlay Defense Value if owned or Fortress
+                if cell.defense_value > 0:
+                    dpg.draw_text([x1 + 15, y1 + 15], str(cell.defense_value), color=(255, 255, 255, 255), size=20, parent="board_canvas")
+
+        # Draw Agent Units (as circles)
+        for agent_id, agent in self.state.agents.items():
+            for ux, uy in agent.units:
+                cx = uy * self.cell_size + (self.cell_size // 2)
+                cy = ux * self.cell_size + (self.cell_size // 2)
+                # Darker circle to represent the physical unit
+                dpg.draw_circle([cx, cy], self.cell_size // 3, fill=(0, 0, 0, 150), parent="board_canvas")
+
+    def update_stats_panel(self, current_agent_id, explored, pruned):
+        """Updates the right-side text panels with fresh GameState data[cite: 1]."""
+        for aid, agent in self.state.agents.items():
+            owned_cells = sum(1 for row in self.state.grid for cell in row if cell.type == aid)
+            stat_str = f"Score: {agent.score} | Energy: {agent.energy} | Units: {len(agent.units)} | Cells: {owned_cells}"
+            dpg.set_value(f"stats_{aid}", stat_str)
+
+        # Update AI stats
+        dpg.set_value("nodes_explored", f"Last Action Nodes Explored: {explored}")
+        pruning_eff = (pruned / explored * 100) if explored > 0 else 0
+        dpg.set_value("nodes_pruned", f"Last Action Nodes Pruned: {pruned} ({pruning_eff:.1f}%)")
+
+    def log_move(self, text):
+        """Appends text to the move log[cite: 1]."""
+        current_text = dpg.get_value("move_log_text")
+        # Keep log from getting infinitely long
+        lines = current_text.split('\n')[-20:] 
+        lines.append(text)
+        dpg.set_value("move_log_text", '\n'.join(lines))
+        # Auto-scroll to bottom
+        dpg.set_y_scroll("move_log_window", dpg.get_y_scroll_max("move_log_window"))
+
+    # --- GAME LOOP HOOKS ---
+
+    def step_game(self):
+        """Callback for 'Next Move' button. You hook your AI here!"""
+        if self.state.is_terminal_state():
+            self.log_move("Game Over!")
+            self.is_running = False
+            return
+
+        # 1. Determine whose turn it is
+        # 2. Call your agent's Expectiminimax get_best_move()
+        # 3. Execute the move & resolve chance events
+        # 4. Gather the stats (explored, pruned) from the AI
+
+        # Example mock update:
+        # self.log_move(f"Agent A used Attack on (3,4). Outcome: Full Success")
+        # self.update_stats_panel('A', 4821, 1203)
+        self.render_board()
+
+    def toggle_run(self):
+        """Callback for 'Run' button. Runs game in a background thread."""
+        self.is_running = not self.is_running
+        if self.is_running:
+            dpg.set_item_label("Run", "Stop") # Changes button text
+            threading.Thread(target=self._run_loop, daemon=True).start()
+        else:
+            dpg.set_item_label("Run", "Run")
+
+    def _run_loop(self):
+        while self.is_running and not self.state.is_terminal_state():
+            self.step_game()
+            time.sleep(0.5) # Configurable speed[cite: 1]
