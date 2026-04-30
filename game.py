@@ -138,6 +138,34 @@ class GameState:
 
         return f"Executed {action} on {target_pos}."
     
+# --- ADD THESE TO GameState CLASS ---
+    def get_next_agent(self, current_agent):
+        """Cycles the turn order: A -> B -> C -> A."""
+        agents = ['A', 'B', 'C']
+        current_idx = agents.index(current_agent)
+        return agents[(current_idx + 1) % 3]
+
+    def is_terminal_state(self):
+        """Checks if the game has met any termination conditions."""
+        if getattr(self, 'round', 0) >= getattr(self, 'max_rounds', 30):
+            return True
+            
+        total_cells = self.n * self.m
+        obstacle_count = sum(1 for row in self.grid for cell in row if cell.type == 'X')
+        valid_cells = total_cells - obstacle_count
+        
+        active_agents = 0
+        for agent_id, agent in self.agents.items():
+            owned_cells = sum(1 for row in self.grid for cell in row if cell.type == agent_id)
+            if valid_cells > 0 and (owned_cells / valid_cells) > 0.60:
+                return True
+            if agent.energy > 0 or len(agent.units) > 0:
+                active_agents += 1
+
+        if active_agents <= 1:
+            return True
+        return False
+    
 
 class AI_Agent:
     def __init__(self, agent_id, max_depth):
@@ -189,7 +217,7 @@ class AI_Agent:
         self.nodes_explored += 1
 
         # Base Case: Reached depth limit or game is over[cite: 1]
-        if depth == 0 or self.is_terminal_state(state):
+        if depth == 0 or state.is_terminal_state():
             return self.evaluation_function(state, maximizing_agent)
 
         # ---------------------------------------------------------
@@ -203,7 +231,7 @@ class AI_Agent:
             
             for prob, outcome_state in chance_outcomes:
                 # Next agent's turn begins after chance resolution
-                next_agent = self.get_next_agent(current_agent)
+                next_agent = state.get_next_agent(current_agent)
                 
                 # Recursively call standard MAX/MIN node. 
                 # Note: Depth decreases only after a full round, or per agent ply depending on your preference.
@@ -264,39 +292,6 @@ class AI_Agent:
                     
             return min_eval
         
-
-    def get_next_agent(self, current_agent):
-        """Cycles the turn order: A -> B -> C -> A."""
-        agents = ['A', 'B', 'C']
-        current_idx = agents.index(current_agent)
-        return agents[(current_idx + 1) % 3]
-
-    def is_terminal_state(self, state):
-        """Checks if the game has met any termination conditions[cite: 1]."""
-        # Condition 1: Round limit reached (assuming you track state.round)[cite: 1]
-        if getattr(state, 'round', 0) >= 30: # Configurable limit, default 30[cite: 1]
-            return True
-            
-        total_cells = state.n * state.m
-        obstacle_count = sum(1 for row in state.grid for cell in row if cell.type == 'X')
-        valid_cells = total_cells - obstacle_count
-        
-        active_agents = 0
-        for agent_id, agent in state.agents.items():
-            # Condition 2: 60% Domination[cite: 1]
-            owned_cells = sum(1 for row in state.grid for cell in row if cell.type == agent_id)
-            if valid_cells > 0 and (owned_cells / valid_cells) > 0.60:
-                return True
-                
-            # Track if agent is still alive
-            if agent.energy > 0 or len(agent.units) > 0:
-                active_agents += 1
-
-        # Condition 3: Only one (or zero) agents left with energy/units[cite: 1]
-        if active_agents <= 1:
-            return True
-
-        return False
     
 
     def generate_legal_moves(self, state, agent_id):
@@ -544,8 +539,8 @@ class AI_Agent:
         # EXPERT AGENT (A) gets the full 5 factors[cite: 1]
         # Factor 4: Positional Advantage (Proximity to high-value cells)[cite: 1]
         # Factor 5: Threat Assessment (Defensive penalty for adjacent opponents)[cite: 1]
-        positional_score = self._calculate_proximity_to_fortresses(state, max_agent.units)
-        threat_penalty = self._calculate_opponent_threats(state, maximizing_agent_id)
+        positional_score = self._calculate_positional_advantage(state, max_agent.units)
+        threat_penalty = self._calculate_threats(state, maximizing_agent_id)
 
         # Final weighted sum for Expert[cite: 1]
         return (score_diff * 2.0) + (territory * 1.5) + (energy_adv * 0.5) + (positional_score * 0.8) - (threat_penalty * 1.2)
@@ -615,9 +610,9 @@ class GameGUI:
         
         # Initialize the AI Agents with their distinct depth limits
         self.ai_agents = {
-            'A': AI_Agent('A', max_depth=7),
-            'B': AI_Agent('B', max_depth=5),
-            'C': AI_Agent('C', max_depth=3)
+            'A': AI_Agent('A', max_depth=2),
+            'B': AI_Agent('B', max_depth=2),
+            'C': AI_Agent('C', max_depth=1)
         }
         
         # Color Dictionary for rendering
@@ -652,7 +647,7 @@ class GameGUI:
                     dpg.add_text("Game Controls")
                     with dpg.group(horizontal=True):
                         dpg.add_button(label="Next Move", callback=self.step_game, width=120)
-                        dpg.add_button(label="Run", callback=self.toggle_run, width=120)
+                        dpg.add_button(label="Run", callback=self.toggle_run, width=120, tag="run_btn")
                     dpg.add_separator()
 
                     # 2. Agent Stats Panel[cite: 1]
@@ -744,8 +739,10 @@ class GameGUI:
         # 1. AI computes the best move
         best_action, utility = ai.get_best_move(self.state)
         
-        # 2. Execute the move (You will need to loop through the 2 actions for the 2 units)
-        # Note: You need to implement the actual application of best_action here!
+        # 2. Execute the move physically on the board
+        if best_action:
+            for unit_idx, (action, target) in enumerate(best_action):
+                self.state.execute_action(current_agent_id, unit_idx, action, target)
         action_desc = str(best_action) 
         
         # 3. Log the stats
@@ -760,7 +757,7 @@ class GameGUI:
         )
         
         # 4. Cycle turn and update visuals
-        self.state.current_turn = ai.get_next_agent(current_agent_id)
+        self.state.current_turn = self.state.get_next_agent(current_agent_id) # Fixed reference
         if self.state.current_turn == 'A':
             self.state.round += 1 # A full round passed
             
@@ -772,10 +769,10 @@ class GameGUI:
         """Callback for 'Run' button. Runs game in a background thread."""
         self.is_running = not self.is_running
         if self.is_running:
-            dpg.set_item_label("Run", "Stop") # Changes button text
+            dpg.set_item_label("run_btn", "Stop") # Use tag!
             threading.Thread(target=self._run_loop, daemon=True).start()
         else:
-            dpg.set_item_label("Run", "Run")
+            dpg.set_item_label("run_btn", "Run")  # Use tag!
 
     def _run_loop(self):
         while self.is_running and not self.state.is_terminal_state():
