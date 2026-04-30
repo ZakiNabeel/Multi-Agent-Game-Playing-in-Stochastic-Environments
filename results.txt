@@ -1,463 +1,463 @@
 --- Stochastic Battlefield Match Log ---
 
 Move 1 Agent A (Expert) | Action: (('Wait', None), ('Move', (1, 0)))
-Expectiminimax nodes explored     : 68
-Nodes pruned (Alpha-Beta)         : 2 (2.9%)
-Chosen action value (utility)     : 0.90
+Expectiminimax nodes explored     : 48
+Nodes pruned (Alpha-Beta)         : 2 (4.2%)
+Chosen action value (utility)     : 5.10
 --------------------------------------------------
 Move 2 Agent B (Intermediate) | Action: (('Move', (6, 0)), ('Move', (7, 1)))
-Expectiminimax nodes explored     : 427
-Nodes pruned (Alpha-Beta)         : 6 (1.4%)
-Chosen action value (utility)     : -0.83
+Expectiminimax nodes explored     : 413
+Nodes pruned (Alpha-Beta)         : 6 (1.5%)
+Chosen action value (utility)     : 2.17
 --------------------------------------------------
-Move 3 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
+Move 3 Agent C (Novice) | Action: (('Move', (2, 7)), ('Move', (3, 6)))
 Expectiminimax nodes explored     : 65
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 2.00
 --------------------------------------------------
 Move 4 Agent A (Expert) | Action: (('Wait', None), ('Move', (0, 0)))
-Expectiminimax nodes explored     : 212
-Nodes pruned (Alpha-Beta)         : 10 (4.7%)
-Chosen action value (utility)     : 2.13
+Expectiminimax nodes explored     : 128
+Nodes pruned (Alpha-Beta)         : 10 (7.8%)
+Chosen action value (utility)     : 6.37
 --------------------------------------------------
 Move 5 Agent B (Intermediate) | Action: (('Move', (5, 0)), ('Move', (6, 1)))
-Expectiminimax nodes explored     : 704
-Nodes pruned (Alpha-Beta)         : 13 (1.8%)
-Chosen action value (utility)     : 1.17
+Expectiminimax nodes explored     : 178
+Nodes pruned (Alpha-Beta)         : 13 (7.3%)
+Chosen action value (utility)     : 9.25
 --------------------------------------------------
-Move 6 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 6 Agent C (Novice) | Action: (('Move', (1, 7)), ('Move', (2, 6)))
+Expectiminimax nodes explored     : 40
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 4.50
 --------------------------------------------------
 Move 7 Agent A (Expert) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 447
-Nodes pruned (Alpha-Beta)         : 8 (1.8%)
-Chosen action value (utility)     : 2.80
+Expectiminimax nodes explored     : 239
+Nodes pruned (Alpha-Beta)         : 8 (3.3%)
+Chosen action value (utility)     : 3.00
 --------------------------------------------------
 Move 8 Agent B (Intermediate) | Action: (('Move', (4, 0)), ('Move', (5, 1)))
-Expectiminimax nodes explored     : 509
-Nodes pruned (Alpha-Beta)         : 32 (6.3%)
-Chosen action value (utility)     : 3.17
+Expectiminimax nodes explored     : 749
+Nodes pruned (Alpha-Beta)         : 32 (4.3%)
+Chosen action value (utility)     : 15.75
 --------------------------------------------------
-Move 9 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 9 Agent C (Novice) | Action: (('Move', (0, 7)), ('Move', (1, 6)))
+Expectiminimax nodes explored     : 70
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 7.50
 --------------------------------------------------
 Move 10 Agent A (Expert) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 447
-Nodes pruned (Alpha-Beta)         : 8 (1.8%)
-Chosen action value (utility)     : 1.07
+Expectiminimax nodes explored     : 255
+Nodes pruned (Alpha-Beta)         : 8 (3.1%)
+Chosen action value (utility)     : -5.63
 --------------------------------------------------
 Move 11 Agent B (Intermediate) | Action: (('Move', (3, 0)), ('Move', (4, 1)))
-Expectiminimax nodes explored     : 643
-Nodes pruned (Alpha-Beta)         : 32 (5.0%)
-Chosen action value (utility)     : 5.17
+Expectiminimax nodes explored     : 677
+Nodes pruned (Alpha-Beta)         : 32 (4.7%)
+Chosen action value (utility)     : 23.75
 --------------------------------------------------
-Move 12 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 12 Agent C (Novice) | Action: (('Move', (0, 6)), ('Move', (1, 5)))
+Expectiminimax nodes explored     : 56
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 11.50
 --------------------------------------------------
 Move 13 Agent A (Expert) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 447
-Nodes pruned (Alpha-Beta)         : 8 (1.8%)
-Chosen action value (utility)     : 0.13
+Expectiminimax nodes explored     : 719
+Nodes pruned (Alpha-Beta)         : 8 (1.1%)
+Chosen action value (utility)     : -18.44
 --------------------------------------------------
 Move 14 Agent B (Intermediate) | Action: (('Move', (2, 0)), ('Move', (3, 1)))
-Expectiminimax nodes explored     : 643
-Nodes pruned (Alpha-Beta)         : 32 (5.0%)
-Chosen action value (utility)     : 7.17
+Expectiminimax nodes explored     : 770
+Nodes pruned (Alpha-Beta)         : 32 (4.2%)
+Chosen action value (utility)     : 33.25
 --------------------------------------------------
-Move 15 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 15 Agent C (Novice) | Action: (('Move', (0, 5)), ('Move', (2, 5)))
+Expectiminimax nodes explored     : 72
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 16.50
 --------------------------------------------------
 Move 16 Agent A (Expert) | Action: (('Wait', None), ('Fortify', (1, 0)))
 Expectiminimax nodes explored     : 1,025
 Nodes pruned (Alpha-Beta)         : 7 (0.7%)
-Chosen action value (utility)     : -0.98
+Chosen action value (utility)     : -36.24
 --------------------------------------------------
 Move 17 Agent B (Intermediate) | Action: (('Wait', None), ('Move', (2, 1)))
-Expectiminimax nodes explored     : 2,562
-Nodes pruned (Alpha-Beta)         : 157 (6.1%)
-Chosen action value (utility)     : 8.20
+Expectiminimax nodes explored     : 1,146
+Nodes pruned (Alpha-Beta)         : 158 (13.8%)
+Chosen action value (utility)     : 41.75
 --------------------------------------------------
-Move 18 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 18 Agent C (Novice) | Action: (('Wait', None), ('Move', (3, 5)))
+Expectiminimax nodes explored     : 84
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 21.50
 --------------------------------------------------
 Move 19 Agent A (Expert) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 1,044
-Nodes pruned (Alpha-Beta)         : 8 (0.8%)
-Chosen action value (utility)     : 2.71
+Expectiminimax nodes explored     : 372
+Nodes pruned (Alpha-Beta)         : 8 (2.2%)
+Chosen action value (utility)     : -52.20
 --------------------------------------------------
 Move 20 Agent B (Intermediate) | Action: (('Wait', None), ('Move', (1, 1)))
-Expectiminimax nodes explored     : 2,513
-Nodes pruned (Alpha-Beta)         : 117 (4.7%)
-Chosen action value (utility)     : 9.35
+Expectiminimax nodes explored     : 1,030
+Nodes pruned (Alpha-Beta)         : 117 (11.4%)
+Chosen action value (utility)     : 51.00
 --------------------------------------------------
-Move 21 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 21 Agent C (Novice) | Action: (('Wait', None), ('Move', (4, 5)))
+Expectiminimax nodes explored     : 84
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 27.00
 --------------------------------------------------
 Move 22 Agent A (Expert) | Action: (('Wait', None), ('Wait', None))
 Expectiminimax nodes explored     : 1,575
 Nodes pruned (Alpha-Beta)         : 8 (0.5%)
-Chosen action value (utility)     : 0.51
+Chosen action value (utility)     : -74.14
 --------------------------------------------------
-Move 23 Agent B (Intermediate) | Action: (('Attack', (1, 0)), ('Move', (1, 0)))
-Expectiminimax nodes explored     : 6,782
-Nodes pruned (Alpha-Beta)         : 206 (3.0%)
-Chosen action value (utility)     : 10.41
+Move 23 Agent B (Intermediate) | Action: (('Move', (1, 0)), ('Move', (1, 0)))
+Expectiminimax nodes explored     : 11,090
+Nodes pruned (Alpha-Beta)         : 206 (1.9%)
+Chosen action value (utility)     : 59.49
 --------------------------------------------------
-Move 24 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 24 Agent C (Novice) | Action: (('Wait', None), ('Move', (5, 5)))
+Expectiminimax nodes explored     : 72
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 33.00
 --------------------------------------------------
-Move 25 Agent A (Expert) | Action: (('Wait', None), ('Move', (1, 0)))
-Expectiminimax nodes explored     : 686
-Nodes pruned (Alpha-Beta)         : 2 (0.3%)
-Chosen action value (utility)     : -0.41
+Move 25 Agent A (Expert) | Action: (('Attack', (1, 0)), ('Attack', (1, 0)))
+Expectiminimax nodes explored     : 19,225
+Nodes pruned (Alpha-Beta)         : 113 (0.6%)
+Chosen action value (utility)     : -99.67
 --------------------------------------------------
-Move 26 Agent B (Intermediate) | Action: (('Move', (1, 0)), ('Attack', (0, 0)))
-Expectiminimax nodes explored     : 5,905
-Nodes pruned (Alpha-Beta)         : 211 (3.6%)
-Chosen action value (utility)     : 11.65
+Move 26 Agent B (Intermediate) | Action: (('Move', (1, 0)), ('Move', (0, 0)))
+Expectiminimax nodes explored     : 3,732
+Nodes pruned (Alpha-Beta)         : 84 (2.3%)
+Chosen action value (utility)     : 71.41
 --------------------------------------------------
-Move 27 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 27 Agent C (Novice) | Action: (('Wait', None), ('Move', (5, 4)))
+Expectiminimax nodes explored     : 60
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 40.00
 --------------------------------------------------
-Move 28 Agent A (Expert) | Action: (('Move', (1, 0)), ('Fortify', (0, 0)))
-Expectiminimax nodes explored     : 1,184
-Nodes pruned (Alpha-Beta)         : 51 (4.3%)
-Chosen action value (utility)     : 2.05
+Move 28 Agent A (Expert) | Action: (('Attack', (1, 0)), ('Move', (1, 0)))
+Expectiminimax nodes explored     : 18,324
+Nodes pruned (Alpha-Beta)         : 116 (0.6%)
+Chosen action value (utility)     : -126.81
 --------------------------------------------------
-Move 29 Agent B (Intermediate) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 979
-Nodes pruned (Alpha-Beta)         : 288 (29.4%)
-Chosen action value (utility)     : 10.00
+Move 29 Agent B (Intermediate) | Action: (('Move', (0, 0)), ('Move', (0, 0)))
+Expectiminimax nodes explored     : 14,108
+Nodes pruned (Alpha-Beta)         : 220 (1.6%)
+Chosen action value (utility)     : 79.00
 --------------------------------------------------
-Move 30 Agent C (Novice) | Action: (('Wait', None), ('Wait', None))
-Expectiminimax nodes explored     : 65
+Move 30 Agent C (Novice) | Action: (('Wait', None), ('Move', (4, 4)))
+Expectiminimax nodes explored     : 60
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 48.00
 --------------------------------------------------
 Move 31 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -154.30
 --------------------------------------------------
 Move 32 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 85.25
 --------------------------------------------------
 Move 33 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 56.00
 --------------------------------------------------
 Move 34 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -180.30
 --------------------------------------------------
 Move 35 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 92.75
 --------------------------------------------------
 Move 36 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 64.00
 --------------------------------------------------
 Move 37 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -206.30
 --------------------------------------------------
 Move 38 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 100.25
 --------------------------------------------------
 Move 39 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 72.00
 --------------------------------------------------
 Move 40 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -232.30
 --------------------------------------------------
 Move 41 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 107.75
 --------------------------------------------------
 Move 42 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 80.00
 --------------------------------------------------
 Move 43 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -258.30
 --------------------------------------------------
 Move 44 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 115.25
 --------------------------------------------------
 Move 45 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 88.00
 --------------------------------------------------
 Move 46 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -284.30
 --------------------------------------------------
 Move 47 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 122.75
 --------------------------------------------------
 Move 48 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 96.00
 --------------------------------------------------
 Move 49 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -310.30
 --------------------------------------------------
 Move 50 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 130.25
 --------------------------------------------------
 Move 51 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 104.00
 --------------------------------------------------
 Move 52 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -336.30
 --------------------------------------------------
 Move 53 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 137.75
 --------------------------------------------------
 Move 54 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 112.00
 --------------------------------------------------
 Move 55 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -362.30
 --------------------------------------------------
 Move 56 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 145.25
 --------------------------------------------------
 Move 57 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 120.00
 --------------------------------------------------
 Move 58 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -388.30
 --------------------------------------------------
 Move 59 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 152.75
 --------------------------------------------------
 Move 60 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 128.00
 --------------------------------------------------
 Move 61 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -414.30
 --------------------------------------------------
 Move 62 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 160.25
 --------------------------------------------------
 Move 63 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 136.00
 --------------------------------------------------
 Move 64 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -440.30
 --------------------------------------------------
 Move 65 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 167.75
 --------------------------------------------------
 Move 66 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 144.00
 --------------------------------------------------
 Move 67 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -466.30
 --------------------------------------------------
 Move 68 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 175.25
 --------------------------------------------------
 Move 69 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 152.00
 --------------------------------------------------
 Move 70 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -492.30
 --------------------------------------------------
 Move 71 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 182.75
 --------------------------------------------------
 Move 72 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 160.00
 --------------------------------------------------
 Move 73 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -518.30
 --------------------------------------------------
 Move 74 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 190.25
 --------------------------------------------------
 Move 75 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 168.00
 --------------------------------------------------
 Move 76 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -544.30
 --------------------------------------------------
 Move 77 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 197.75
 --------------------------------------------------
 Move 78 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 176.00
 --------------------------------------------------
 Move 79 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -570.30
 --------------------------------------------------
 Move 80 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 205.25
 --------------------------------------------------
 Move 81 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 184.00
 --------------------------------------------------
 Move 82 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -596.30
 --------------------------------------------------
 Move 83 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 212.75
 --------------------------------------------------
 Move 84 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 192.00
 --------------------------------------------------
 Move 85 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -622.30
 --------------------------------------------------
 Move 86 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 220.25
 --------------------------------------------------
 Move 87 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 200.00
 --------------------------------------------------
 Move 88 Agent A (Expert) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 2.05
+Chosen action value (utility)     : -648.30
 --------------------------------------------------
 Move 89 Agent B (Intermediate) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 4
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 10.00
+Chosen action value (utility)     : 227.75
 --------------------------------------------------
 Move 90 Agent C (Novice) | Action: [('Wait', None), ('Wait', None)]
 Expectiminimax nodes explored     : 2
 Nodes pruned (Alpha-Beta)         : 0 (0.0%)
-Chosen action value (utility)     : 0.00
+Chosen action value (utility)     : 208.00
 --------------------------------------------------
 
 === GAME OVER ===
-Winner: Agent A
-Final Scores: A: 0 | B: 0 | C: 0
+Winner: Agent C
+Final Scores: A: 36 | B: 352 | C: 395
 
 === EXPECTIMINIMAX SUMMARY TABLE ===
 Agent      | Total Explored  | Total Pruned    | Avg Pruning %  
 -----------------------------------------------------------------
-Agent A    | 7,215           | 112             | 1.6%
-Agent B    | 21,747          | 1,094           | 5.0%
-Agent C    | 690             | 0               | 0.0%
+Agent A    | 41,990          | 288             | 0.7%
+Agent B    | 33,973          | 900             | 2.6%
+Agent C    | 703             | 0               | 0.0%

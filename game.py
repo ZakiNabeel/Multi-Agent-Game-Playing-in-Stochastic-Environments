@@ -756,10 +756,25 @@ class GameGUI:
             utility
         )
         
-        # 4. Cycle turn and update visuals
-        self.state.current_turn = self.state.get_next_agent(current_agent_id) # Fixed reference
+#       4. Cycle turn and update visuals
+        self.state.current_turn = self.state.get_next_agent(current_agent_id) 
+        
+        # If it is A's turn again, a full round has passed!
         if self.state.current_turn == 'A':
-            self.state.round += 1 # A full round passed
+            self.state.round += 1 
+            
+            # --- ADD THIS SCORE TALLYING BLOCK ---
+            for r in range(self.state.n):
+                for c in range(self.state.m):
+                    cell = self.state.grid[r][c]
+                    if cell.type in ['A', 'B', 'C']:
+                        agent = self.state.agents[cell.type]
+                        # +3 for Fortresses, +1 for regular cells[cite: 1]
+                        if getattr(cell, 'is_fortress', False) or getattr(cell, 'is_fortress_base', False):
+                            agent.score += 3
+                        else:
+                            agent.score += 1
+            # --------------------------------------
             
         self.move_counter += 1
         self.render_board()
