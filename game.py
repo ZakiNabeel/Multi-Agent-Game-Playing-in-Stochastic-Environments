@@ -102,8 +102,7 @@ class GameState:
             if agent.disabled_turns.get(unit_idx, 0) > 0:
                 agent.disabled_turns[unit_idx] -= 1
 
-        agent.energy -= 1 # Base cost for any action[cite: 1]
-        
+        agent.energy = max(0, agent.energy - 1) # Base cost, clamp at 0        
         if action == 'Wait':
             return "Waited."
 
@@ -509,26 +508,28 @@ class AI_Agent:
         max_agent = state.agents[maximizing_agent_id]
         opponents = [a for aid, a in state.agents.items() if aid != maximizing_agent_id]
         
-        avg_opp_score = sum(o.score for o in opponents) / max(1, len(opponents))
-        
-        # Factor 1: Score Differential (Used by ALL agents)
-        score_diff = max_agent.score - avg_opp_score
-        
-        # NOVICE AGENT (C) stops here - Greedy evaluation[cite: 1]
-        if self.agent_id == 'C':
-            return score_diff
-            
-        # Factor 2: Territory Control (Owned cells + heavily weighted fortresses)[cite: 1]
+        # --- FACTOR 2: Territory Control (Calculated first to project scores) ---
+        # We calculate this early so Agent C can project its future score based on owned cells.
         territory = 0
         for row in state.grid:
             for cell in row:
                 if cell.type == maximizing_agent_id:
                     territory += 1
                     # Highly value Fortresses since they yield +3 points[cite: 1]
-                    if getattr(cell, 'is_fortress_base', False): 
+                    if getattr(cell, 'is_fortress', False) or getattr(cell, 'is_fortress_base', False): 
                         territory += 3 
                         
-        # Factor 3: Energy Advantage[cite: 1]
+        # --- FACTOR 1: Score Differential (Projected) ---
+        # Add current territory to the base score to project what they WILL earn at round end[cite: 1]
+        avg_opp_score = sum(o.score for o in opponents) / max(1, len(opponents))
+        projected_score = max_agent.score + territory
+        score_diff = projected_score - avg_opp_score
+        
+        # NOVICE AGENT (C) stops here - Greedy evaluation[cite: 1]
+        if self.agent_id == 'C':
+            return score_diff
+
+        # --- FACTOR 3: Energy Advantage[cite: 1] ---
         avg_opp_energy = sum(o.energy for o in opponents) / max(1, len(opponents))
         energy_adv = max_agent.energy - avg_opp_energy
 
@@ -536,7 +537,7 @@ class AI_Agent:
         if self.agent_id == 'B':
             return (score_diff * 1.5) + (territory * 1.0) + (energy_adv * 0.5)
 
-        # EXPERT AGENT (A) gets the full 5 factors[cite: 1]
+        #EXPERT AGENT (A) gets the full 5 factors[cite: 1]
         # Factor 4: Positional Advantage (Proximity to high-value cells)[cite: 1]
         # Factor 5: Threat Assessment (Defensive penalty for adjacent opponents)[cite: 1]
         positional_score = self._calculate_positional_advantage(state, max_agent.units)
@@ -544,7 +545,6 @@ class AI_Agent:
 
         # Final weighted sum for Expert[cite: 1]
         return (score_diff * 2.0) + (territory * 1.5) + (energy_adv * 0.5) + (positional_score * 0.8) - (threat_penalty * 1.2)
-    
 
     # --- Evaluation Helper Functions (For the Expert Agent) ---
 
