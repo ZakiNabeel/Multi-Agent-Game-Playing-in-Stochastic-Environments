@@ -361,45 +361,147 @@ class AI_Agent:
 
     def get_chance_outcomes(self, state):
         """
-        Takes the queued move and resolves it into branches based on probabilities[cite: 1].
+        Takes the queued move and resolves it into probability branches.
         Returns: list of (probability, new_state) tuples.
         """
-        # If no stochastic events are triggered (e.g., both units just Waited or Fortified),
-        # return a single 100% probability branch.
-        agent = state.agents[state.pending_agent]
-        is_stochastic = False
-        
-        # Check if the queued moves trigger dice rolls (Attacks or Moving into Opponents/Mines)
-        for action, target in state.pending_move:
-            if action == 'Attack':
-                is_stochastic = True
+        agent_id = state.pending_agent
+        moves = state.pending_move  # Format: [('Action1', (x,y)), ('Action2', (x,y))]
+
+        # This will hold the possible probability/outcome pairs for each individual unit
+        unit_branches = []
+
+        for unit_idx, (action, target) in enumerate(moves):
+            branches_for_this_unit = []
+            
+            if action in ['Wait', 'Fortify']:
+                # Deterministic (100% chance of happening exactly as planned)
+                branches_for_this_unit.append((1.0, (action, target, 'deterministic')))
+                
+            elif action == 'Attack':
+                target_cell = state.grid[target[0]][target[1]]
+                if target_cell.type in ['A', 'B', 'C'] and target_cell.type != agent_id:
+                    # 6 Combat Outcomes[cite: 1]
+                    for outcome, prob in zip(state.combat_outcomes, state.combat_weights):
+                        branches_for_this_unit.append((prob, (action, target, outcome)))
+                else:
+                    branches_for_this_unit.append((1.0, (action, target, 'deterministic')))
+                    
             elif action == 'Move':
-                tx, ty = target
-                cell_type = state.grid[tx][ty].type
-                if cell_type == 'M' or (cell_type in ['A', 'B', 'C'] and cell_type != state.pending_agent):
-                    is_stochastic = True
+                target_cell = state.grid[target[0]][target[1]]
+                if target_cell.type == 'M':
+                    # 4 Minefield Outcomes[cite: 1]
+                    for outcome, prob in zip(state.mine_outcomes, state.mine_weights):
+                        branches_for_this_unit.append((prob, (action, target, outcome)))
+                elif target_cell.type in ['A', 'B', 'C'] and target_cell.type != agent_id:
+                    # Moving into opponent triggers combat[cite: 1]
+                    for outcome, prob in zip(state.combat_outcomes, state.combat_weights):
+                        branches_for_this_unit.append((prob, (action, target, outcome)))
+                else:
+                    # Normal move to empty cell
+                    branches_for_this_unit.append((1.0, (action, target, 'deterministic')))
 
-        if not is_stochastic:
-            # Apply deterministic effects directly
-            self._apply_deterministic_actions(state, state.pending_agent, state.pending_move)
-            return [(1.0, state)]
+            unit_branches.append(branches_for_this_unit)
 
-        # --- STOCHASTIC BRANCHING ---
+        # Generate all combinations of realities for the 2 units (Cartesian Product)
+        combined_branches = list(itertools.product(*unit_branches))
         outcomes = []
-        
-        # Note: If BOTH units perform stochastic actions, you must calculate the 
-        # cross-product of their probabilities (e.g., 9 faces * 9 faces = 81 branches).
-        # For brevity in this stub, assuming we generate all valid (prob, state) pairs:
-        
-        # 1. Generate all possible combinations of outcomes for the pending moves based
-        #    on the uneven 9-sided die probabilities or 4-sided mine events[cite: 1].
-        # 2. For each combination:
-        #      branch_state = copy.deepcopy(state)
-        #      apply_specific_outcomes(branch_state)
-        #      outcomes.append( (combined_probability, branch_state) )
-        
-        # (You will need to use the probability tables defined in your GameState here)
+
+        for combination in combined_branches:
+            # Calculate the compound probability of this specific timeline
+            combined_prob = 1.0
+            for prob, _ in combination:
+                combined_prob *= prob
+
+            if combined_prob == 0:
+                continue
+
+            # Create a new universe for this outcome
+            branch_state = copy.deepcopy(state)
+            
+            # Apply the specific outcomes to the board without using random.choices()
+            for unit_idx, (_, action_tuple) in enumerate(combination):
+                action, target, outcome = action_tuple
+                self._apply_specific_outcome(branch_state, agent_id, unit_idx, action, target, outcome)
+
+            # Clean up tracking variables
+            if hasattr(branch_state, 'pending_agent'):
+                del branch_state.pending_agent
+            if hasattr(branch_state, 'pending_move'):
+                del branch_state.pending_move
+
+            outcomes.append((combined_prob, branch_state))
+
         return outcomes
+
+
+    def _apply_specific_outcome(self, state, agent_id, unit_idx, action, target_pos, outcome):
+        """
+        Forces the game state to apply a specific deterministic or chance outcome.
+        This bypasses GameState.execute_action() to prevent random.choices() from firing.
+        """
+        agent = state.agents[agent_id]
+        
+        # Validate energy/disable status[cite: 1]
+        if agent.energy <= 0 or agent.disabled_turns.get(unit_idx, 0) > 0:
+            action = 'Wait'
+            if agent.disabled_turns.get(unit_idx, 0) > 0:
+                agent.disabled_turns[unit_idx] -= 1
+                
+        agent.energy -= 1  # Base cost[cite: 1]
+        if action == 'Wait': 
+            return
+
+        tx, ty = target_pos
+
+        if action == 'Move':
+            target_cell = state.grid[tx][ty]
+            if target_cell.type == '.':
+                target_cell.type = agent_id
+                target_cell.defense_value = 1
+                agent.units[unit_idx] = (tx, ty)
+            elif target_cell.type == 'M':
+                agent.units[unit_idx] = (tx, ty)
+                if outcome == 'drain':
+                    agent.energy = max(0, agent.energy - 3)
+                elif outcome == 'disable':
+                    agent.disabled_turns[unit_idx] = 2
+                elif outcome == 'detonate':
+                    agent.energy = max(0, agent.energy - 5)
+                    target_cell.type = 'X' # Becomes permanent obstacle[cite: 1]
+            else: 
+                # Moving into opponent
+                self._apply_combat_outcome(state, agent_id, unit_idx, target_pos, outcome, is_move=True)
+                
+        elif action == 'Attack':
+            self._apply_combat_outcome(state, agent_id, unit_idx, target_pos, outcome, is_move=False)
+            
+        elif action == 'Fortify':
+            target_cell = state.grid[tx][ty]
+            if target_cell.type == agent_id and target_cell.defense_value < 3:
+                target_cell.defense_value += 1
+
+    def _apply_combat_outcome(self, state, attacker_id, unit_idx, target_pos, outcome, is_move):
+        """Helper to resolve the specific combat die face."""
+        attacker = state.agents[attacker_id]
+        tx, ty = target_pos
+        target_cell = state.grid[tx][ty]
+
+        if outcome == 'fail_energy':
+            attacker.energy = max(0, attacker.energy - 1)
+        elif outcome in ['partial', 'partial_adv']:
+            target_cell.type = '.'
+            target_cell.defense_value = 0
+            if outcome == 'partial_adv' and is_move:
+                attacker.units[unit_idx] = (tx, ty)
+        elif outcome in ['full', 'critical']:
+            target_cell.defense_value -= 1
+            if target_cell.defense_value <= 0:
+                target_cell.type = attacker_id
+                target_cell.defense_value = 1
+                if outcome == 'critical':
+                    attacker.score += 2
+                if is_move:
+                    attacker.units[unit_idx] = (tx, ty)
     
 
     def evaluation_function(self, state, maximizing_agent_id):
@@ -504,10 +606,19 @@ class AI_Agent:
 
 
 class GameGUI:
-    def __init__(self, game_state):
+    def __init__(self, game_state, logger):
         self.state = game_state
+        self.logger = logger
         self.cell_size = 50
-        self.is_running = False  # For the "Run" button
+        self.is_running = False
+        self.move_counter = 1
+        
+        # Initialize the AI Agents with their distinct depth limits
+        self.ai_agents = {
+            'A': AI_Agent('A', max_depth=7),
+            'B': AI_Agent('B', max_depth=5),
+            'C': AI_Agent('C', max_depth=3)
+        }
         
         # Color Dictionary for rendering
         self.colors = {
@@ -621,21 +732,41 @@ class GameGUI:
     # --- GAME LOOP HOOKS ---
 
     def step_game(self):
-        """Callback for 'Next Move' button. You hook your AI here!"""
+        """Executes one turn for the current agent."""
         if self.state.is_terminal_state():
             self.log_move("Game Over!")
             self.is_running = False
             return
 
-        # 1. Determine whose turn it is
-        # 2. Call your agent's Expectiminimax get_best_move()
-        # 3. Execute the move & resolve chance events
-        # 4. Gather the stats (explored, pruned) from the AI
-
-        # Example mock update:
-        # self.log_move(f"Agent A used Attack on (3,4). Outcome: Full Success")
-        # self.update_stats_panel('A', 4821, 1203)
+        current_agent_id = self.state.current_turn
+        ai = self.ai_agents[current_agent_id]
+        
+        # 1. AI computes the best move
+        best_action, utility = ai.get_best_move(self.state)
+        
+        # 2. Execute the move (You will need to loop through the 2 actions for the 2 units)
+        # Note: You need to implement the actual application of best_action here!
+        action_desc = str(best_action) 
+        
+        # 3. Log the stats
+        self.logger.log_move(
+            self.move_counter, 
+            current_agent_id, 
+            "Expert" if current_agent_id == 'A' else "Intermediate" if current_agent_id == 'B' else "Novice", 
+            action_desc, 
+            ai.nodes_explored, 
+            ai.nodes_pruned, 
+            utility
+        )
+        
+        # 4. Cycle turn and update visuals
+        self.state.current_turn = ai.get_next_agent(current_agent_id)
+        if self.state.current_turn == 'A':
+            self.state.round += 1 # A full round passed
+            
+        self.move_counter += 1
         self.render_board()
+        self.update_stats_panel(current_agent_id, ai.nodes_explored, ai.nodes_pruned)
 
     def toggle_run(self):
         """Callback for 'Run' button. Runs game in a background thread."""
@@ -709,3 +840,53 @@ class GameLogger:
         print(final_text)
         with open(self.filename, 'a') as f:
             f.write(final_text)
+
+
+#Board Parsing
+def load_board(filename="board.txt"):
+    with open(filename, 'r') as f:
+        lines = f.read().splitlines()
+        
+    # Read dimensions and rounds
+    n, m, r = map(int, lines[0].split())
+    state = GameState(n, m)
+    state.round = 0          # Track current round
+    state.max_rounds = r     # Store max rounds
+    state.current_turn = 'A' # Agent A starts
+    
+    # Parse the grid
+    for i in range(n):
+        for j in range(m):
+            char = lines[i+1][j]
+            state.grid[i][j] = Cell(char)
+            if char == 'F':
+                state.grid[i][j].is_fortress = True # For the evaluation function
+                
+    # Parse agent starting coordinates
+    ax, ay = map(int, lines[n+1].split())
+    bx, by = map(int, lines[n+2].split())
+    cx, cy = map(int, lines[n+3].split())
+    
+    # Each agent gets 2 units at their starting location
+    state.agents['A'].units = [(ax, ay), (ax, ay)]
+    state.agents['B'].units = [(bx, by), (bx, by)]
+    state.agents['C'].units = [(cx, cy), (cx, cy)]
+    
+    return state
+
+
+if __name__ == "__main__":
+    # 1. Load the board
+    initial_state = load_board("board.txt")
+    
+    # 2. Setup the logger
+    game_logger = GameLogger("results.txt")
+    
+    # 3. Start the GUI
+    gui = GameGUI(initial_state, game_logger)
+    gui.setup_gui()
+    
+    # 4. Log final game over stats when GUI is closed
+    final_scores = {aid: a.score for aid, a in initial_state.agents.items()}
+    winner = max(final_scores, key=final_scores.get)
+    game_logger.log_game_over(winner, final_scores)
